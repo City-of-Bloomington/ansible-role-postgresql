@@ -13,7 +13,8 @@
                    state=present
                    role_attr_flags=LOGIN,SUPERUSER
 
-- become: yes
+- name: Create database for Super User account
+  become: yes
   become_user: postgres
   postgresql_db: name={{ ansible_user|default(lookup('env', 'USER'), True) }}
                  state=present
