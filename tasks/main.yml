@@ -10,6 +10,18 @@
   template:
     src: "pg_hba.conf"
     dest: "/etc/postgresql/9.5/main/pg_hba.conf"
+  notify: "postgresql_restart"
+
+- name: "Configure network listener"
+  lineinfile:
+    path: "/etc/postgresql/9.5/main/postgresql.conf"
+    regexp: "listen_addresses"
+    line: "listen_addresses = '{{ postgresql_listen_addresses }}'     # what IP address(es) to listen on;"
+  notify: "postgresql_restart"
+
+- name: "Configure the firewall (postgres)"
+  ufw: rule=allow port=postgres
+  when: postgresql_listen_addresses != 'localhost'
 
 - name: Ensure Super User Account
   become: yes
