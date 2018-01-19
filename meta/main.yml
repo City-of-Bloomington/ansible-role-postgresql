@@ -8,8 +8,7 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
-        - trusty
-        - xenial
+        - all
   galaxy_tags:
     - ubuntu
     - database
