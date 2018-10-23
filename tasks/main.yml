@@ -4,11 +4,12 @@
 
 - name: "Install PostgreSQL"
   apt:
-    pkg: "{{ item }}"
+    name: "{{ packages }}"
     state: "present"
-  with_items:
-    - "postgresql"
-    - "libpq-dev"
+  vars:
+    packages:
+      - "postgresql"
+      - "libpq-dev"
 
 - name: "Install psycopg2 for Python3"
   apt:
@@ -39,20 +40,4 @@
     rule: "allow"
     port: "postgres"
   when: postgresql_listen_addresses is defined and postgresql_listen_addresses != 'localhost'
-
-- name: "Ensure Super User Account"
-  become: "yes"
-  become_user: "postgres"
-  postgresql_user:
-    name: "{{ ansible_user|default(lookup('env', 'USER'), True) }}"
-    state: "present"
-    role_attr_flags: "LOGIN,SUPERUSER"
-
-- name: "Create database for Super User account"
-  become: "yes"
-  become_user: "postgres"
-  postgresql_db:
-    name: "{{ ansible_user|default(lookup('env', 'USER'), True) }}"
-    state: "present"
-    owner: "{{ ansible_user|default(lookup('env', 'USER'), True) }}"
 ...
