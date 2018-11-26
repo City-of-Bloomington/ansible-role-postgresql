@@ -1,4 +1,5 @@
 ---
-postgresql_version: "10.4"
-postgresql_config_path: "/etc/postgresql/10/main"
+postgresql_version: "10"
+postgresql_config_path: "/etc/postgresql/{{ postgresql_version }}/main"
+postgresql_lib_path: "/usr/lib/postgresql/{{ postgresql_version }}/lib"
 ...
