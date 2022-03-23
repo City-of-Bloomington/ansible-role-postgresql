@@ -8,6 +8,7 @@
     state: "present"
   vars:
     packages:
+      - 'acl'
       - "postgresql"
       - "libpq-dev"
 
