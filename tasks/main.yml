@@ -11,28 +11,14 @@
       - 'acl'
       - "postgresql"
       - "libpq-dev"
-
-- name: "Install psycopg2 for Python3"
-  apt:
-    pkg: "python3-psycopg2"
-  when: "ansible_python_version is version_compare('3', '>=')"
-
-- name: "Install psycopg2 for Python2"
-  apt:
-    pkg: "python-psycopg2"
-  when: "ansible_python_version is version_compare('3', '<')"
-
-- name: "Configure access control"
-  template:
-    src: "pg_hba.conf"
-    dest: "{{ postgresql_config_path }}/pg_hba.conf"
-  notify: "postgresql_restart"
+      - 'postgis'
+      - 'python3-psycopg2'
 
 - name: "Configure network listener"
   lineinfile:
     path: "{{ postgresql_config_path }}/postgresql.conf"
     regexp: "listen_addresses"
-    line: "listen_addresses = '{{ postgresql_listen_addresses }}'     # what IP address(es) to listen on;"
+    line: "listen_addresses = '*'     # what IP address(es) to listen on;"
   when: "postgresql_listen_addresses is defined"
   notify: "postgresql_restart"
 
@@ -40,7 +26,6 @@
   ufw:
     rule: "allow"
     port: "postgres"
-  when: "postgresql_listen_addresses is defined and postgresql_listen_addresses != 'localhost'"
 
 - name: "Create backup directory"
   file:
