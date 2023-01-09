@@ -32,6 +32,7 @@
     path: "/srv/backups/postgres"
     state: "directory"
     group: "staff"
+    mode:  "u=rwX,g=rwXs,o=rX"
 
 - name: "Install cron backup script"
   template:
