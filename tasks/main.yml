@@ -19,7 +19,6 @@
     path: "{{ postgresql_config_path }}/postgresql.conf"
     regexp: "listen_addresses"
     line: "listen_addresses = '*'     # what IP address(es) to listen on;"
-  when: "postgresql_listen_addresses is defined"
   notify: "postgresql_restart"
 
 - name: "Configure the firewall (postgres)"
