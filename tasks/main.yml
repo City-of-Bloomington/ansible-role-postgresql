@@ -1,6 +1,6 @@
 ---
 - name: "Load os-specific variables"
-  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+  include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
 
 - name: "Install PostgreSQL"
   apt:
