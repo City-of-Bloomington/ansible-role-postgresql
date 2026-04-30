@@ -1,9 +1,9 @@
 ---
 - name: "Load os-specific variables"
-  include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
+  ansible.builtin.include_vars: "{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_version'] }}.yml"
 
 - name: "Install PostgreSQL"
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
     state: "present"
   vars:
@@ -15,26 +15,26 @@
       - 'python3-psycopg2'
 
 - name: "Configure network listener"
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: "{{ postgresql_config_path }}/postgresql.conf"
     regexp: "listen_addresses"
     line: "listen_addresses = '*'     # what IP address(es) to listen on;"
   notify: "postgresql_restart"
 
 - name: "Configure the firewall (postgres)"
-  ufw:
+  community.general.ufw:
     rule: "allow"
     port: "postgres"
 
 - name: "Create backup directory"
-  file:
+  ansible.builtin.file:
     path: "/srv/backups/postgres"
     state: "directory"
     group: "staff"
     mode:  "u=rwX,g=rwXs,o=rX"
 
 - name: "Install cron backup script"
-  template:
+  ansible.builtin.template:
     src: "backup.sh"
     dest: "/etc/cron.daily/backup.d/postgres"
     mode: "0755"
