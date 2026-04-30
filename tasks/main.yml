@@ -26,6 +26,17 @@
     rule: "allow"
     port: "postgres"
 
+- name: 'Copy keys for backup user'
+  ansible.builtin.copy:
+    content: "{{ item.content }}"
+    dest: "/root/.ssh/{{ item.name }}"
+    mode: '0600'
+  no_log: "yes"
+  loop:
+    - { content: "{{ postgresql_backup.id_rsa.private }}", name: "{{ postgresql_backup.user }}" }
+    - { content: "{{ postgresql_backup.id_rsa.public  }}", name: "{{ postgresql_backup.user }}.pub" }
+  when: 'postgresql_backup.user is defined'
+
 - name: "Create backup directory"
   ansible.builtin.file:
     path: "/srv/backups/postgres"
