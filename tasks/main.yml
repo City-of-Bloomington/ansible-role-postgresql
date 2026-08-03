@@ -47,6 +47,6 @@
 - name: "Install cron backup script"
   ansible.builtin.template:
     src: "backup.sh"
-    dest: "/etc/cron.daily/backup.d/postgres"
+    dest: "/etc/cron.daily/postgres"
     mode: "0755"
 ...
